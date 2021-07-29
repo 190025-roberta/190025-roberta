@@ -1,0 +1,91 @@
+from nltk import word_tokenize
+import networkx as nx
+from networkx.algorithms import bipartite
+import pythonds
+
+
+reference_sentence = input('inserisci la frase di riferimento: ')
+reproduced_sentence = input('inserisci la frase riprodotta: ')
+print(sentenceEvaluation(reproduced_sentence, reference_sentence))
+
+def sentenceEvaluation(s_prd, s_ref):
+    ins, dele, sub = sentenceMatching(s_prd, s_ref)
+    s_prd_set = apply(s_prd, s_ref, ins, dele, sub)
+    s_ref = modulize(s_ref)
+    cost = null
+    s_prd_best = ""
+    for sentence in range(len(s_prd_set)):
+        s_prd = modularize(sentence, s_ref)
+        swaps, moves = greadyAlignment(s_prd, s_ref)
+        current_cost = compute_cost(swaps, moves, ins, dele, sub)
+        if current_cost < cost:
+            cost = current_cost
+            s_prd_best = s_prd
+    return cost, s_prd_best
+
+def sentenceMatching(s_prd, s_ref):
+    graph = prox_bipartite_matching(s_prd, s_ref)
+    s_ref_tok = word_tokanizer(s_ref)
+    ins = set()
+    dele = set()
+    sub = set()
+    list_edges = generate_edgelist(graph)
+    for node in G.nodes(data=True):
+        s = G.node()
+        if s in s_ref_tok:
+            ins.add(s)
+        else:
+            dele.add(s)
+    for edge in graph.edges():
+        s = g.getValue(edge)
+        if isinstance(s, g):
+            sub.add(s)
+    return ins, dele, sub
+
+##def apply(s_prd, s_ref, ins, dele, sub) TODOOO
+    
+
+def prox_bipartite_matching(s_prd, s_ref):
+    G = nx.Graph()
+    s_prd_tok = word_tokenize(s_prd)
+    s_ref_tok = word_tokenize(s_ref)
+    G.add_nodes_from(s_prd_tok, bipartite='reproduced sentence')
+    G.add_nodes_from(s_ref_tok, bipartite='reference sentence')
+    for sRef in s_ref_tok:
+        for sPrd in s_prd_tok:
+            if(sPrd==sRef):
+                G.add_edges_from([(sRef, sPrd)])
+    return G
+
+
+
+def greadyAlignment(s_prd, s_ref):
+    phi = 0
+    aligned = false
+    n_ref = len(s_ref)
+    while not aligned:
+        i = 0
+        while i < n_ref and s_ref[i] == s_prd[i]:
+            i = i+1
+        if i < n_ref:
+            s = swap(s_prd, i , s_ref)
+            c[0] = distance(s_ref, s) + 1
+            s, from_1, to_1 = move(s_prd, i, s_ref)
+            c[1] = distance(s_ref, s) + 1
+            s, from_2, to_2 = move(s_prd, i, s_ref)
+            c[2] = distance(s_ref, s) + 1
+            op = argmin(c)
+            switch(op)
+        else:
+             aligned = true
+    return swaps, moves
+
+def switch(operation):
+    switcher = {
+        0: 'todo',
+        1: 'todo',
+        2: 'todo',
+    }
+    return switcher.get(operation, "invalid case")
+
+
